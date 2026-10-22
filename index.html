@@ -13,28 +13,32 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; }
 
-  /* ── Header ── */
   header { text-align: center; padding: 32px 20px 16px; }
   header h1 { font-size: 28px; font-weight: 600; }
   header h1 span { color: var(--accent); }
   header p { color: var(--muted); font-size: 14px; margin-top: 4px; }
 
-  /* ── Main layout ── */
   .container { max-width: 800px; margin: 0 auto; padding: 0 20px 40px; }
 
-  /* ── Drop zone ── */
   .dropzone {
     border: 2px dashed var(--border); border-radius: var(--radius);
-    padding: 48px 32px; text-align: center; cursor: pointer;
-    transition: all 0.2s;
+    padding: 48px 32px; text-align: center; cursor: pointer; transition: all 0.2s;
   }
   .dropzone:hover, .dropzone.drag-over { border-color: var(--accent); background: rgba(0,176,240,0.05); }
   .dropzone .icon { font-size: 48px; margin-bottom: 12px; }
-  .dropzone .label { font-size: 16px; color: var(--text); }
+  .dropzone .label { font-size: 16px; }
   .dropzone .hint { font-size: 13px; color: var(--muted); margin-top: 4px; }
   .dropzone input[type="file"] { display: none; }
 
-  /* ── Settings panel ── */
+  .file-info {
+    display: none; margin-top: 16px; padding: 16px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  }
+  .file-info.active { display: block; }
+  .file-info .row { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 13px; }
+  .file-info .row .lbl { color: var(--muted); }
+  .file-info .row .val { color: var(--text); font-family: 'SF Mono', Consolas, monospace; }
+
   .settings {
     display: none; margin-top: 24px; padding: 24px;
     background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
@@ -42,42 +46,21 @@
   .settings.active { display: block; }
   .settings h3 { font-size: 14px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
 
-  .setting-row {
-    display: flex; align-items: center; gap: 12px; margin-bottom: 14px;
-  }
-  .setting-row label {
-    min-width: 140px; font-size: 14px; color: var(--text);
-  }
-  .setting-row input, .setting-row select {
+  .setting-row { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .setting-row label { min-width: 140px; font-size: 14px; }
+  .setting-row input[type="number"], .setting-row select {
     background: var(--bg); border: 1px solid var(--border); border-radius: 6px;
     color: var(--text); font-size: 14px; padding: 8px 12px; width: 120px;
   }
-  .setting-row input:focus, .setting-row select:focus {
-    outline: none; border-color: var(--accent);
-  }
+  .setting-row input:focus { outline: none; border-color: var(--accent); }
   .setting-row .unit { font-size: 13px; color: var(--muted); }
 
-  /* ── File info ── */
-  .file-info {
-    display: none; margin-top: 16px; padding: 16px;
-    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
-  }
-  .file-info.active { display: block; }
-  .file-info .row { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 13px; }
-  .file-info .row .label { color: var(--muted); }
-  .file-info .row .value { color: var(--text); font-family: 'SF Mono', Consolas, monospace; }
-
-  /* ── Side checkboxes ── */
-  .sides-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px;
-    width: 140px;
-  }
+  .sides-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; width: 140px; }
   .sides-grid .cell { display: flex; align-items: center; justify-content: center; }
   .sides-grid .cell label { font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 4px; }
   .sides-grid .cell input[type="checkbox"] { accent-color: var(--accent); }
   .sides-grid .spacer { visibility: hidden; }
 
-  /* ── Buttons ── */
   .actions { margin-top: 24px; display: flex; gap: 12px; }
   .btn {
     padding: 12px 24px; border: none; border-radius: 8px; font-size: 15px;
@@ -89,47 +72,35 @@
   .btn-secondary { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
   .btn-secondary:hover { border-color: var(--accent); }
 
-  /* ── Progress ── */
-  .progress-bar {
-    display: none; margin-top: 16px; height: 6px; background: var(--surface);
-    border-radius: 3px; overflow: hidden;
-  }
+  .progress-bar { display: none; margin-top: 16px; height: 6px; background: var(--surface); border-radius: 3px; overflow: hidden; }
   .progress-bar.active { display: block; }
   .progress-bar .fill { height: 100%; background: var(--accent); transition: width 0.3s; width: 0; }
-  .status-text {
-    display: none; margin-top: 8px; font-size: 13px; color: var(--muted);
-  }
+  .status-text { display: none; margin-top: 8px; font-size: 13px; color: var(--muted); }
   .status-text.active { display: block; }
 
-  /* ── Preview ── */
-  .preview {
-    display: none; margin-top: 24px;
+  .result-banner {
+    display: none; margin-top: 16px; padding: 14px 20px;
+    background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.3);
+    border-radius: var(--radius); font-size: 14px; color: var(--success);
   }
+  .result-banner.active { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .result-banner.error { background: rgba(255,107,107,0.1); border-color: rgba(255,107,107,0.3); color: var(--danger); }
+
+  .preview { display: none; margin-top: 24px; }
   .preview.active { display: block; }
   .preview h3 { font-size: 14px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
-  .preview-images {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
-  }
+  .preview-images { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   .preview-card {
     background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
     padding: 12px; text-align: center;
   }
   .preview-card .title { font-size: 12px; color: var(--muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
   .preview-card img {
-    max-width: 100%; border-radius: 6px; background: repeating-conic-gradient(#333 0% 25%, #444 0% 50%) 50% / 20px 20px;
+    max-width: 100%; border-radius: 6px;
+    background: repeating-conic-gradient(#333 0% 25%, #444 0% 50%) 50% / 20px 20px;
   }
   .preview-card .dims { font-size: 11px; color: var(--muted); margin-top: 6px; font-family: 'SF Mono', Consolas, monospace; }
 
-  /* ── Result banner ── */
-  .result-banner {
-    display: none; margin-top: 16px; padding: 14px 20px;
-    background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.3);
-    border-radius: var(--radius); font-size: 14px; color: var(--success);
-  }
-  .result-banner.active { display: flex; align-items: center; gap: 8px; }
-  .result-banner.error { background: rgba(255,107,107,0.1); border-color: rgba(255,107,107,0.3); color: var(--danger); }
-
-  /* ── Footer ── */
   footer { text-align: center; padding: 20px; font-size: 12px; color: #555; }
   footer a { color: var(--accent); text-decoration: none; }
 </style>
@@ -141,7 +112,6 @@
 </header>
 
 <div class="container">
-  <!-- Drop zone -->
   <div class="dropzone" id="dropzone">
     <div class="icon">📄</div>
     <div class="label">Drop a JPEG, TIFF, or PNG here</div>
@@ -149,15 +119,14 @@
     <input type="file" id="fileInput" accept=".jpg,.jpeg,.tif,.tiff,.png">
   </div>
 
-  <!-- File info -->
   <div class="file-info" id="fileInfo">
-    <div class="row"><span class="label">File</span><span class="value" id="infoName">—</span></div>
-    <div class="row"><span class="label">Size</span><span class="value" id="infoSize">—</span></div>
-    <div class="row"><span class="label">Dimensions</span><span class="value" id="infoDims">—</span></div>
-    <div class="row"><span class="label">Format</span><span class="value" id="infoFormat">—</span></div>
+    <div class="row"><span class="lbl">File</span><span class="val" id="infoName">—</span></div>
+    <div class="row"><span class="lbl">Size</span><span class="val" id="infoSize">—</span></div>
+    <div class="row"><span class="lbl">Dimensions</span><span class="val" id="infoDims">—</span></div>
+    <div class="row"><span class="lbl">Resolution</span><span class="val" id="infoDpi">—</span></div>
+    <div class="row"><span class="lbl">Format</span><span class="val" id="infoFormat">—</span></div>
   </div>
 
-  <!-- Settings -->
   <div class="settings" id="settings">
     <h3>Bleed Settings</h3>
 
@@ -165,18 +134,6 @@
       <label for="bleedAmount">Bleed Amount</label>
       <input type="number" id="bleedAmount" value="0.125" min="0.0625" max="0.75" step="0.0625">
       <span class="unit">inches</span>
-    </div>
-
-    <div class="setting-row">
-      <label for="dpiInput">Image DPI</label>
-      <input type="number" id="dpiInput" value="300" min="72" max="1200" step="1">
-      <span class="unit">ppi</span>
-    </div>
-
-    <div class="setting-row">
-      <label for="qualityInput">Output Quality</label>
-      <input type="number" id="qualityInput" value="100" min="50" max="100" step="5">
-      <span class="unit">%</span>
     </div>
 
     <div class="setting-row">
@@ -194,9 +151,22 @@
       </div>
     </div>
 
-    <div class="setting-row" id="bleedPreview">
+    <div class="setting-row">
       <label>Bleed in Pixels</label>
-      <span class="value" id="bleedPxDisplay" style="font-family:'SF Mono',Consolas,monospace;color:var(--accent)">38 px</span>
+      <span class="val" id="bleedPxDisplay" style="font-family:'SF Mono',Consolas,monospace;color:var(--accent)">—</span>
+    </div>
+
+    <div class="setting-row">
+      <label>Output Size</label>
+      <span class="val" id="outputSizeDisplay" style="font-family:'SF Mono',Consolas,monospace;color:var(--accent)">—</span>
+    </div>
+
+    <div class="setting-row">
+      <label for="qualityMode">Fill Mode</label>
+      <select id="qualityMode" style="background:var(--bg);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:14px;padding:8px 12px;width:200px;">
+        <option value="fast">Fast (mirror + blend)</option>
+        <option value="high">High Quality (inpaint)</option>
+      </select>
     </div>
 
     <div class="actions">
@@ -205,14 +175,10 @@
     </div>
   </div>
 
-  <!-- Progress -->
   <div class="progress-bar" id="progressBar"><div class="fill" id="progressFill"></div></div>
   <div class="status-text" id="statusText"></div>
-
-  <!-- Result -->
   <div class="result-banner" id="resultBanner"></div>
 
-  <!-- Preview -->
   <div class="preview" id="previewArea">
     <h3>Before → After</h3>
     <div class="preview-images">
@@ -245,6 +211,8 @@ const SERVER_URL = 'https://gs-thumbnail-server.fly.dev';
 let currentFile = null;
 let resultBlob = null;
 let resultFilename = null;
+let detectedDpi = 300;
+let detectedW = 0, detectedH = 0;
 
 // ── DOM refs ──
 const dropzone = document.getElementById('dropzone');
@@ -252,9 +220,8 @@ const fileInput = document.getElementById('fileInput');
 const fileInfo = document.getElementById('fileInfo');
 const settings = document.getElementById('settings');
 const bleedInput = document.getElementById('bleedAmount');
-const dpiInput = document.getElementById('dpiInput');
-const qualityInput = document.getElementById('qualityInput');
 const bleedPxDisplay = document.getElementById('bleedPxDisplay');
+const outputSizeDisplay = document.getElementById('outputSizeDisplay');
 const generateBtn = document.getElementById('generateBtn');
 const resetBtn = document.getElementById('resetBtn');
 const progressBar = document.getElementById('progressBar');
@@ -266,7 +233,11 @@ const downloadBtn = document.getElementById('downloadBtn');
 const newFileBtn = document.getElementById('newFileBtn');
 
 // ── Helpers ──
-function numVal(el) { return parseFloat(el.value) || parseFloat(el.getAttribute('value')) || 0; }
+function numVal(el) {
+  var v = parseFloat(el.value);
+  if (isNaN(v)) v = parseFloat(el.getAttribute('value'));
+  return isNaN(v) ? 0 : v;
+}
 
 function formatSize(bytes) {
   if (bytes < 1024) return bytes + ' B';
@@ -274,11 +245,20 @@ function formatSize(bytes) {
   return (bytes / 1048576).toFixed(1) + ' MB';
 }
 
-function updateBleedPx() {
-  const bleed = numVal(bleedInput);
-  const dpi = numVal(dpiInput);
-  const px = Math.round(bleed * dpi);
-  bleedPxDisplay.textContent = px + ' px';
+function updateBleedCalc() {
+  var bleed = numVal(bleedInput);
+  if (bleed < 0.0625) bleed = 0.125;
+  var px = Math.round(bleed * detectedDpi);
+  bleedPxDisplay.textContent = px + ' px (at ' + detectedDpi + ' DPI)';
+  if (detectedW > 0 && detectedH > 0) {
+    var top = document.getElementById('sideTop').checked ? 1 : 0;
+    var right = document.getElementById('sideRight').checked ? 1 : 0;
+    var bottom = document.getElementById('sideBottom').checked ? 1 : 0;
+    var left = document.getElementById('sideLeft').checked ? 1 : 0;
+    var nw = detectedW + (left + right) * px;
+    var nh = detectedH + (top + bottom) * px;
+    outputSizeDisplay.textContent = nw + ' × ' + nh + ' px';
+  }
 }
 
 function setStatus(text) {
@@ -291,100 +271,369 @@ function setProgress(pct) {
   progressFill.style.width = Math.max(0, Math.min(100, pct)) + '%';
 }
 
-function showResult(msg, isError = false) {
+function showResult(msg, isError) {
   resultBanner.textContent = msg;
   resultBanner.className = 'result-banner active' + (isError ? ' error' : '');
 }
 
+// ── Read JPEG dimensions + channels from SOF marker (proven from ProofmakerPro) ──
+function parseJpegDims(uint8) {
+  var info = { w: 0, h: 0, channels: 0 };
+  if (uint8[0] !== 0xFF || uint8[1] !== 0xD8) return info;
+  var pos = 2;
+  while (pos < uint8.length - 10) {
+    if (uint8[pos] !== 0xFF) { pos++; continue; }
+    while (pos < uint8.length - 1 && uint8[pos + 1] === 0xFF) pos++;
+    var mk = uint8[pos + 1];
+    pos += 2;
+    if (mk === 0xD8 || mk === 0xD9 || (mk >= 0xD0 && mk <= 0xD7)) continue;
+    if (mk >= 0xC0 && mk <= 0xC3) {
+      info.h = (uint8[pos + 3] << 8) | uint8[pos + 4];
+      info.w = (uint8[pos + 5] << 8) | uint8[pos + 6];
+      info.channels = uint8[pos + 7];
+      break;
+    }
+    if (pos + 1 >= uint8.length) break;
+    var segLen = (uint8[pos] << 8) | uint8[pos + 1];
+    if (segLen < 2) break;
+    pos += segLen;
+  }
+  return info;
+}
+
+// ── Detect DPI from JPEG: JFIF APP0 then EXIF IFD (proven from ProofmakerPro) ──
+function detectDpi(uint8) {
+  // JFIF APP0
+  for (var i = 0; i < Math.min(uint8.length, 1000) - 16; i++) {
+    if (uint8[i] === 0xFF && uint8[i+1] === 0xE0) {
+      if (uint8[i+4] === 0x4A && uint8[i+5] === 0x46 && uint8[i+6] === 0x49 && uint8[i+7] === 0x46) {
+        var units = uint8[i+9];
+        var xDens = (uint8[i+10] << 8) | uint8[i+11];
+        if (units === 1 && xDens > 0) return xDens;
+        if (units === 2 && xDens > 0) return Math.round(xDens * 2.54);
+      }
+      break;
+    }
+  }
+  // EXIF APP1
+  for (var i = 0; i < Math.min(uint8.length, 65536) - 12; i++) {
+    if (uint8[i] === 0xFF && uint8[i+1] === 0xE1) {
+      var exifStart = i + 4;
+      if (uint8[exifStart] === 0x45 && uint8[exifStart+1] === 0x78 && uint8[exifStart+2] === 0x69 && uint8[exifStart+3] === 0x66) {
+        var tiffStart = exifStart + 6;
+        var isLE = uint8[tiffStart] === 0x49;
+        function read16(off) { return isLE ? (uint8[off] | (uint8[off+1] << 8)) : ((uint8[off] << 8) | uint8[off+1]); }
+        function read32(off) { return isLE ? (uint8[off] | (uint8[off+1] << 8) | (uint8[off+2] << 16) | (uint8[off+3] << 24)) : ((uint8[off] << 24) | (uint8[off+1] << 16) | (uint8[off+2] << 8) | uint8[off+3]); }
+        var ifdOff = tiffStart + read32(tiffStart + 4);
+        var numEntries = read16(ifdOff);
+        for (var e = 0; e < numEntries; e++) {
+          var entryOff = ifdOff + 2 + e * 12;
+          if (read16(entryOff) === 0x011A) { // XResolution tag
+            var valOff = tiffStart + read32(entryOff + 8);
+            var num = read32(valOff), den = read32(valOff + 4);
+            if (den > 0) return Math.round(num / den);
+          }
+        }
+      }
+      break;
+    }
+  }
+  return 0;
+}
+
+// ── Read standalone TIFF file: dimensions + DPI from IFD ──
+// Used when the entire file fits in one buffer
+function parseTiffInfo(uint8) {
+  var info = { w: 0, h: 0, dpi: 0 };
+  var le = (uint8[0] === 0x49 && uint8[1] === 0x49);
+  var be = (uint8[0] === 0x4D && uint8[1] === 0x4D);
+  if (!le && !be) return info;
+
+  function u16(off) {
+    if (off + 1 >= uint8.length) return 0;
+    return le ? (uint8[off] | (uint8[off+1] << 8)) : ((uint8[off] << 8) | uint8[off+1]);
+  }
+  function u32(off) {
+    if (off + 3 >= uint8.length) return 0;
+    return le
+      ? (uint8[off] | (uint8[off+1] << 8) | (uint8[off+2] << 16) | ((uint8[off+3] << 24) >>> 0))
+      : (((uint8[off] << 24) >>> 0) | (uint8[off+1] << 16) | (uint8[off+2] << 8) | uint8[off+3]);
+  }
+
+  if (u16(2) !== 42) return info;
+
+  var ifdOff = u32(4);
+  if (ifdOff + 2 > uint8.length) return info;
+
+  var numEntries = u16(ifdOff);
+  var resUnit = 2;
+  var xResOff = 0;
+
+  for (var e = 0; e < numEntries; e++) {
+    var off = ifdOff + 2 + e * 12;
+    if (off + 12 > uint8.length) break;
+    var tag = u16(off);
+    var type = u16(off + 2);
+    if (tag === 256) info.w = (type === 3) ? u16(off + 8) : u32(off + 8);
+    if (tag === 257) info.h = (type === 3) ? u16(off + 8) : u32(off + 8);
+    if (tag === 296) resUnit = u16(off + 8);
+    if (tag === 282) xResOff = u32(off + 8);
+  }
+
+  if (xResOff > 0 && xResOff + 8 <= uint8.length) {
+    var num = u32(xResOff);
+    var den = u32(xResOff + 4);
+    if (den > 0) {
+      var res = num / den;
+      if (resUnit === 2) info.dpi = Math.round(res);
+      else if (resUnit === 3) info.dpi = Math.round(res * 2.54);
+    }
+  }
+
+  return info;
+}
+
+// ── Parse TIFF IFD from a separate buffer (two-pass read for large files) ──
+// hdr: first 8 bytes of the file, ifdBuf: bytes starting at ifdOff, le: endianness
+function parseTiffFromIfd(hdr, ifdBuf, ifdOff, le, fileSize) {
+  var info = { w: 0, h: 0, dpi: 0 };
+
+  function u16(buf, off) {
+    if (off + 1 >= buf.length) return 0;
+    return le ? (buf[off] | (buf[off+1] << 8)) : ((buf[off] << 8) | buf[off+1]);
+  }
+  function u32(buf, off) {
+    if (off + 3 >= buf.length) return 0;
+    return le
+      ? (buf[off] | (buf[off+1] << 8) | (buf[off+2] << 16) | ((buf[off+3] << 24) >>> 0))
+      : (((buf[off] << 24) >>> 0) | (buf[off+1] << 16) | (buf[off+2] << 8) | buf[off+3]);
+  }
+
+  // IFD data is in ifdBuf, but file-relative offsets need to be adjusted
+  // ifdBuf[0] corresponds to file offset ifdOff
+  var numEntries = u16(ifdBuf, 0);
+  var resUnit = 2;
+  var xResFileOff = 0;
+
+  for (var e = 0; e < numEntries; e++) {
+    var off = 2 + e * 12; // offset within ifdBuf
+    if (off + 12 > ifdBuf.length) break;
+    var tag = u16(ifdBuf, off);
+    var type = u16(ifdBuf, off + 2);
+
+    if (tag === 256) info.w = (type === 3) ? u16(ifdBuf, off + 8) : u32(ifdBuf, off + 8);
+    if (tag === 257) info.h = (type === 3) ? u16(ifdBuf, off + 8) : u32(ifdBuf, off + 8);
+    if (tag === 296) resUnit = u16(ifdBuf, off + 8);
+    // XResolution is a RATIONAL — the value field holds a file-relative offset
+    if (tag === 282) xResFileOff = u32(ifdBuf, off + 8);
+  }
+
+  // Try to read the RATIONAL value — it might be within our ifdBuf or in the header area
+  if (xResFileOff > 0) {
+    var ratLocalOff = xResFileOff - ifdOff; // offset within ifdBuf
+    if (ratLocalOff >= 0 && ratLocalOff + 8 <= ifdBuf.length) {
+      // RATIONAL is near the IFD (same region we read)
+      var num = u32(ifdBuf, ratLocalOff);
+      var den = u32(ifdBuf, ratLocalOff + 4);
+      if (den > 0) {
+        var res = num / den;
+        if (resUnit === 2) info.dpi = Math.round(res);
+        else if (resUnit === 3) info.dpi = Math.round(res * 2.54);
+      }
+    } else if (xResFileOff + 8 <= hdr.length) {
+      // RATIONAL is near the start of the file (common layout: pixel data first, IFD at end,
+      // but RATIONAL values stored right after the 8-byte TIFF header)
+      var num = u32(hdr, xResFileOff);
+      var den = u32(hdr, xResFileOff + 4);
+      if (den > 0) {
+        var res = num / den;
+        if (resUnit === 2) info.dpi = Math.round(res);
+        else if (resUnit === 3) info.dpi = Math.round(res * 2.54);
+      }
+    }
+  }
+
+  return info;
+}
+
+// ── Read PNG dimensions from IHDR ──
+function parsePngInfo(uint8) {
+  var info = { w: 0, h: 0, dpi: 0 };
+  if (uint8[0] !== 0x89 || uint8[1] !== 0x50) return info;
+  info.w = ((uint8[16] << 24) >>> 0) | (uint8[17] << 16) | (uint8[18] << 8) | uint8[19];
+  info.h = ((uint8[20] << 24) >>> 0) | (uint8[21] << 16) | (uint8[22] << 8) | uint8[23];
+  // pHYs chunk for DPI
+  var pos = 8;
+  while (pos + 12 < uint8.length && pos < 8192) {
+    var chunkLen = ((uint8[pos] << 24) >>> 0) | (uint8[pos+1] << 16) | (uint8[pos+2] << 8) | uint8[pos+3];
+    var chunkType = String.fromCharCode(uint8[pos+4], uint8[pos+5], uint8[pos+6], uint8[pos+7]);
+    if (chunkType === 'pHYs' && chunkLen >= 9) {
+      var xPPU = ((uint8[pos+8] << 24) >>> 0) | (uint8[pos+9] << 16) | (uint8[pos+10] << 8) | uint8[pos+11];
+      var unit = uint8[pos+16];
+      if (unit === 1 && xPPU > 0) info.dpi = Math.round(xPPU / 39.3701);
+    }
+    if (chunkType === 'IDAT') break; // no need to go past pixel data
+    pos += 12 + chunkLen;
+  }
+  return info;
+}
+
 // ── File handling ──
 function handleFile(file) {
-  const ext = file.name.split('.').pop().toLowerCase();
-  const validExts = ['jpg', 'jpeg', 'tif', 'tiff', 'png'];
-  if (!validExts.includes(ext)) {
+  var ext = file.name.split('.').pop().toLowerCase();
+  var validExts = ['jpg', 'jpeg', 'tif', 'tiff', 'png'];
+  if (validExts.indexOf(ext) < 0) {
     showResult('⚠️ Unsupported format. Use JPEG, TIFF, or PNG.', true);
     return;
   }
 
   currentFile = file;
   resultBlob = null;
+  detectedDpi = 300; // default until we read the file
+  detectedW = 0;
+  detectedH = 0;
   resultBanner.classList.remove('active');
   previewArea.classList.remove('active');
 
-  // Show file info
   document.getElementById('infoName').textContent = file.name;
   document.getElementById('infoSize').textContent = formatSize(file.size);
   document.getElementById('infoFormat').textContent = ext.toUpperCase();
+  document.getElementById('infoDims').textContent = 'reading…';
+  document.getElementById('infoDpi').textContent = 'reading…';
   fileInfo.classList.add('active');
 
-  // Try to read dimensions from the image
-  if (['jpg', 'jpeg', 'png'].includes(ext)) {
-    const img = new Image();
-    img.onload = function() {
-      document.getElementById('infoDims').textContent = img.naturalWidth + ' × ' + img.naturalHeight + ' px';
-      URL.revokeObjectURL(img.src);
-    };
-    img.src = URL.createObjectURL(file);
-  } else {
-    document.getElementById('infoDims').textContent = '(server will detect)';
-  }
+  // Read header bytes to parse dimensions + DPI
+  // For TIFF: IFD can be at the END of the file, so we do a two-pass read:
+  //   pass 1: first 8 bytes to get IFD offset
+  //   pass 2: read from IFD offset to get tags
+  // For JPEG/PNG: first 256KB is always enough
+  var isJpegFile = (ext === 'jpg' || ext === 'jpeg');
+  var isTiffFile = (ext === 'tif' || ext === 'tiff');
+  var isPngFile = (ext === 'png');
 
-  // Try to detect DPI from JPEG JFIF header
-  if (['jpg', 'jpeg'].includes(ext)) {
-    const reader = new FileReader();
-    reader.onload = function() {
-      const buf = new Uint8Array(reader.result);
-      // JFIF APP0: FF E0, then 'JFIF\0', then version, units byte, Xdensity, Ydensity
-      if (buf[0] === 0xFF && buf[1] === 0xD8 && buf[2] === 0xFF && buf[3] === 0xE0) {
-        const units = buf[11];
-        const xDen = (buf[12] << 8) | buf[13];
-        if (units === 1 && xDen >= 72 && xDen <= 1200) {
-          dpiInput.value = xDen;
-          updateBleedPx();
-        }
+  if (isTiffFile) {
+    // Two-pass TIFF read
+    var headerReader = new FileReader();
+    headerReader.onload = function() {
+      var hdr = new Uint8Array(headerReader.result);
+      var le = (hdr[0] === 0x49 && hdr[1] === 0x49);
+      var be = (hdr[0] === 0x4D && hdr[1] === 0x4D);
+      if (!le && !be) { showTiffFallback(); return; }
+      function h32(off) {
+        return le
+          ? (hdr[off] | (hdr[off+1] << 8) | (hdr[off+2] << 16) | ((hdr[off+3] << 24) >>> 0))
+          : (((hdr[off] << 24) >>> 0) | (hdr[off+1] << 16) | (hdr[off+2] << 8) | hdr[off+3]);
       }
+      var ifdOff = h32(4);
+      // Read from IFD offset: up to 4KB for the directory + rational values
+      var ifdSize = Math.min(file.size - ifdOff, 4096);
+      if (ifdOff < 8 || ifdSize < 2) { showTiffFallback(); return; }
+
+      var ifdReader = new FileReader();
+      ifdReader.onload = function() {
+        var ifdBuf = new Uint8Array(ifdReader.result);
+        var tiffInfo = parseTiffFromIfd(hdr, ifdBuf, ifdOff, le, file.size);
+        applyFileInfo(tiffInfo.w, tiffInfo.h, tiffInfo.dpi, 0);
+      };
+      ifdReader.readAsArrayBuffer(file.slice(ifdOff, ifdOff + ifdSize));
     };
-    reader.readAsArrayBuffer(file.slice(0, 20));
+    headerReader.readAsArrayBuffer(file.slice(0, 256));
+  } else {
+    var headerSize = Math.min(file.size, 1024 * 1024); // 1MB — covers huge ICC profiles before SOF
+    var reader = new FileReader();
+    reader.onload = function() {
+      var buf = new Uint8Array(reader.result);
+      var w = 0, h = 0, dpi = 0, channels = 0;
+
+      if (isJpegFile) {
+        var jpgDims = parseJpegDims(buf);
+        w = jpgDims.w; h = jpgDims.h; channels = jpgDims.channels;
+        dpi = detectDpi(buf);
+      } else if (isPngFile) {
+        var pngInfo = parsePngInfo(buf);
+        w = pngInfo.w; h = pngInfo.h; dpi = pngInfo.dpi;
+      }
+
+      applyFileInfo(w, h, dpi, channels);
+    };
+    reader.readAsArrayBuffer(file.slice(0, headerSize));
   }
 
-  // Show preview of original
-  if (['jpg', 'jpeg', 'png'].includes(ext)) {
+  function showTiffFallback() {
+    document.getElementById('infoDims').textContent = '(could not detect)';
+    document.getElementById('infoDpi').textContent = '300 DPI (assumed)';
+    updateBleedCalc();
+  }
+
+  function applyFileInfo(w, h, dpi, channels) {
+    if (w > 0 && h > 0) {
+      detectedW = w;
+      detectedH = h;
+      var dimStr = w + ' × ' + h + ' px';
+      if (dpi > 0) dimStr += '  (' + (w / dpi).toFixed(2) + '″ × ' + (h / dpi).toFixed(2) + '″)';
+      document.getElementById('infoDims').textContent = dimStr;
+    } else {
+      document.getElementById('infoDims').textContent = '(could not detect)';
+    }
+
+    if (dpi > 0) {
+      detectedDpi = dpi;
+      document.getElementById('infoDpi').textContent = dpi + ' DPI';
+    } else {
+      document.getElementById('infoDpi').textContent = '300 DPI (assumed)';
+    }
+
+    if (channels === 4) {
+      document.getElementById('infoFormat').textContent = ext.toUpperCase() + ' (CMYK)';
+    }
+
+    updateBleedCalc();
+  }
+
+  // Show preview of original (browser can show JPEG/PNG, not TIFF)
+  if (ext === 'jpg' || ext === 'jpeg' || ext === 'png') {
     document.getElementById('previewBefore').src = URL.createObjectURL(file);
+  } else {
+    document.getElementById('previewBefore').removeAttribute('src');
   }
 
   settings.classList.add('active');
   generateBtn.disabled = false;
-  updateBleedPx();
+  updateBleedCalc();
 }
 
 // ── Drop zone events ──
-dropzone.addEventListener('click', () => fileInput.click());
-fileInput.addEventListener('change', (e) => {
+dropzone.addEventListener('click', function() { fileInput.click(); });
+fileInput.addEventListener('change', function(e) {
   if (e.target.files[0]) handleFile(e.target.files[0]);
 });
-dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('drag-over'); });
-dropzone.addEventListener('dragleave', () => dropzone.classList.remove('drag-over'));
-dropzone.addEventListener('drop', (e) => {
+dropzone.addEventListener('dragover', function(e) { e.preventDefault(); dropzone.classList.add('drag-over'); });
+dropzone.addEventListener('dragleave', function() { dropzone.classList.remove('drag-over'); });
+dropzone.addEventListener('drop', function(e) {
   e.preventDefault();
   dropzone.classList.remove('drag-over');
   if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
 });
 
 // ── Settings listeners ──
-bleedInput.addEventListener('input', updateBleedPx);
-dpiInput.addEventListener('input', updateBleedPx);
+bleedInput.addEventListener('input', updateBleedCalc);
+bleedInput.addEventListener('change', updateBleedCalc);
+document.getElementById('sideTop').addEventListener('change', updateBleedCalc);
+document.getElementById('sideRight').addEventListener('change', updateBleedCalc);
+document.getElementById('sideBottom').addEventListener('change', updateBleedCalc);
+document.getElementById('sideLeft').addEventListener('change', updateBleedCalc);
 
 // ── Generate ──
-generateBtn.addEventListener('click', async () => {
+generateBtn.addEventListener('click', async function() {
   if (!currentFile) return;
 
-  const bleed = numVal(bleedInput);
-  const dpi = numVal(dpiInput);
-  const quality = numVal(qualityInput);
-  const sides = [
+  var bleed = numVal(bleedInput);
+  if (bleed < 0.0625) bleed = 0.125;
+  var sides = [
     document.getElementById('sideTop').checked ? 1 : 0,
     document.getElementById('sideRight').checked ? 1 : 0,
     document.getElementById('sideBottom').checked ? 1 : 0,
-    document.getElementById('sideLeft').checked ? 1 : 0,
+    document.getElementById('sideLeft').checked ? 1 : 0
   ].join(',');
 
   generateBtn.disabled = true;
@@ -392,22 +641,22 @@ generateBtn.addEventListener('click', async () => {
   setStatus('Uploading to server…');
   resultBanner.classList.remove('active');
 
-  const formData = new FormData();
+  var formData = new FormData();
   formData.append('file', currentFile);
 
   try {
     setProgress(30);
     setStatus('Processing — extending bleed with content-aware inpainting…');
 
-    const url = `${SERVER_URL}/bleed?bleed=${bleed}&dpi=${dpi}&quality=${quality}&sides=${sides}`;
-    const resp = await fetch(url, {
-      method: 'POST',
-      body: formData
-    });
+    var mode = document.getElementById('qualityMode').value;
+    var url = SERVER_URL + '/bleed?bleed=' + bleed + '&dpi=' + detectedDpi + '&quality=100&sides=' + sides + '&mode=' + mode;
+    var resp = await fetch(url, { method: 'POST', body: formData });
 
     if (!resp.ok) {
-      const err = await resp.json().catch(() => ({ error: 'Server error' }));
-      throw new Error(err.detail || err.error || 'Request failed');
+      var errBody = null;
+      try { errBody = await resp.json(); } catch(ignored) {}
+      var detail = errBody ? (errBody.detail || errBody.error) : ('HTTP ' + resp.status);
+      throw new Error(detail);
     }
 
     setProgress(80);
@@ -416,24 +665,21 @@ generateBtn.addEventListener('click', async () => {
     resultBlob = await resp.blob();
     resultFilename = 'bleed_' + currentFile.name;
 
-    // Read headers for info
-    const origSize = resp.headers.get('X-Original-Size') || '?';
-    const newSize = resp.headers.get('X-Result-Size') || '?';
-    const elapsed = resp.headers.get('X-Elapsed') || '?';
+    var origSize = resp.headers.get('X-Original-Size') || (detectedW + 'x' + detectedH);
+    var newSize = resp.headers.get('X-Result-Size') || '?';
+    var elapsed = resp.headers.get('X-Elapsed') || '?';
 
     setProgress(100);
     setStatus('');
 
-    // Show preview
-    const afterUrl = URL.createObjectURL(resultBlob);
+    var afterUrl = URL.createObjectURL(resultBlob);
     document.getElementById('previewAfter').src = afterUrl;
-    document.getElementById('dimsBefore').textContent = origSize;
-    document.getElementById('dimsAfter').textContent = newSize;
+    document.getElementById('dimsBefore').textContent = origSize.replace('x', ' × ') + ' px';
+    document.getElementById('dimsAfter').textContent = newSize.replace('x', ' × ') + ' px';
     previewArea.classList.add('active');
 
-    showResult(`✅ Bleed extended! ${origSize} → ${newSize} (${elapsed}ms)`);
-
-    setTimeout(() => setProgress(-1), 1000);
+    showResult('✅ Bleed extended! ' + origSize.replace('x', ' × ') + ' → ' + newSize.replace('x', ' × ') + ' (' + elapsed + 'ms)', false);
+    setTimeout(function() { setProgress(-1); }, 1000);
   } catch (err) {
     setProgress(-1);
     setStatus('');
@@ -444,9 +690,9 @@ generateBtn.addEventListener('click', async () => {
 });
 
 // ── Download ──
-downloadBtn.addEventListener('click', () => {
+downloadBtn.addEventListener('click', function() {
   if (!resultBlob) return;
-  const a = document.createElement('a');
+  var a = document.createElement('a');
   a.href = URL.createObjectURL(resultBlob);
   a.download = resultFilename;
   a.click();
@@ -459,6 +705,9 @@ newFileBtn.addEventListener('click', doReset);
 function doReset() {
   currentFile = null;
   resultBlob = null;
+  detectedDpi = 300;
+  detectedW = 0;
+  detectedH = 0;
   fileInput.value = '';
   fileInfo.classList.remove('active');
   settings.classList.remove('active');
